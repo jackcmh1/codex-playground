@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-assets="local">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light"><title>Libra Cup · Guide Studio</title>
+  <link rel="stylesheet" href="styles.css"><script src="app.js" defer></script>
+</head>
+<body>
+  <div class="studio-bar" id="studio-bar">
+    <a class="brand" href="./"><span class="brand-mark">U<span>↗</span></span><span>GUIDE STUDIO<small>UMAMUSUME · GLOBAL</small></span></a>
+    <div class="studio-label"><span class="live-dot"></span> CM18 SAMPLE <span class="divider">/</span> RECORDING WORKSPACE</div>
+    <button id="sources-button" class="quiet">Sources & notes <span>↗</span></button>
+  </div>
+
+  <main>
+    <div class="workspace-heading"><div><span class="eyebrow">PRESENTATION PREVIEW</span><h1>One race. A clearer game plan.</h1></div><p>Hover to focus. Click to keep it in view.</p></div>
+    <div class="canvas-viewport" id="canvas-viewport"><div class="stage-wrap" id="stage-wrap">
+      <article class="stage" id="stage" aria-label="CM18 presentation">
+        <header class="slide-header"><div class="cup-meta"><span class="cup-number">CM / 18</span><span class="season">CHAMPIONS MEETING <i></i> GRAND LIVE</span></div><div class="edition">GLOBAL SERVER<span>REFERENCE EDITION</span></div></header>
+        <div class="slide-title"><div><div class="eyebrow">THE MILE PLAYBOOK</div><h2>Libra <em>Cup.</em></h2></div><div class="course"><strong>HANSHIN <span>1,600<span class="unit">m</span></span></strong><div class="course-tags"><span>Turf</span><span>Mile</span><span>Right-handed</span><span>Autumn</span><span>Firm · Cloudy</span></div></div></div>
+        <section id="overview" class="slide-body" aria-label="Target stats and reference runners">
+          <div class="stats-panel"><div class="section-label"><span>01 / TARGET STATS</span><span>GRAND LIVE</span></div><div id="stats"></div><div class="stat-footnote"><span>↗</span> Targets transcribed from the supplied slide.<br>Historical CM18 example, not a current meta update.</div></div>
+          <div class="feature-panel"><div class="section-label"><span>FEATURED REFERENCE PICK</span><span class="style-pill">PACE</span></div><div class="feature-art"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="art-word">LIBRA</span><div id="featured-image"></div><span class="art-caption">PDF p.4 · Identity / outfit unverified</span></div><div class="feature-caption"><span class="tiny-cross">✳</span><p>A familiar face.<br><strong>A more focused explanation.</strong></p></div></div>
+          <div class="roster-panel"><div class="section-label"><span>02 / REFERENCE RUNNERS</span><span>SELECT A PICK ↓</span></div><div class="featured-picks" id="featured-picks"></div><div class="roster-label">MORE PICKS FROM THE ORIGINAL SLIDE</div><div class="roster-grid" id="roster"></div><div class="detail-card" id="overview-detail" aria-live="polite"></div></div>
+        </section>
+        <section id="inheritance" class="slide-body inheritance-body" aria-label="Inheritance and skills" hidden>
+          <div class="inheritance-main"><div class="section-label"><span>01 / INHERITANCE & SKILLS</span><button class="text-button" id="show-all">Show all styles ↗</button></div><div class="table-head"><span>RUNNING STYLE</span><span>ACCELERATION</span><span>SPEED</span></div><div id="skill-rows"></div><p class="table-note">Skill names follow the supplied PDF. Character slots are reference placeholders; exact identities and activation conditions need review.</p></div>
+          <aside class="skill-aside"><span class="eyebrow">EXPLAIN ONE THING AT A TIME</span><h3>Find your<br><em>winning line.</em></h3><div id="skill-detail" class="skill-detail" aria-live="polite"></div><div class="source-chip"><span>↗</span> SOURCE: YOUR CM18 SLIDES, pp.4–5</div></aside>
+        </section>
+        <footer class="slide-footer"><div><span class="footer-mark">U↗</span> UMAMUSUME / GUIDE STUDIO <span class="footer-source">LOCAL REFERENCE PROTOTYPE</span></div><div class="page-indicator"><span id="slide-name">TARGETS & RUNNERS</span><strong id="page-count">01 <i>/ 02</i></strong></div></footer>
+      </article>
+    </div></div>
+    <div class="mobile-review"><span>Landscape recommended · zoom to inspect, swipe to pan.</span><button id="zoom" aria-pressed="false">Zoom in</button></div>
+    <nav class="controls" aria-label="Presentation controls"><div class="slide-tabs"><button data-slide="0" class="active" aria-pressed="true"><span>01</span> Targets & runners</button><button data-slide="1" aria-pressed="false"><span>02</span> Inheritance & skills</button></div><div class="control-actions"><button id="reset" title="Clear selections (Escape)">↺ <span>Reset</span></button><button id="fullscreen" title="Toggle fullscreen (F)">⛶ <span>Fullscreen</span></button><button id="recording" class="record-button" title="Hide studio controls (H)"><span class="record-dot"></span> Clean view <span>H</span></button><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button></div></nav>
+    <div class="workspace-footer"><span><kbd>←</kbd><kbd>→</kbd> switch slides <span>·</span> <kbd>Esc</kbd> clear focus <span>·</span> <kbd>H</kbd> hide controls</span><span>CM18 demo <i></i> No live data</span></div>
+  </main>
+  <button id="restore" hidden>Show controls · H</button>
+  <dialog id="sources"><div class="dialog-heading"><span class="eyebrow">PROTOTYPE NOTES</span><button id="close-sources" aria-label="Close source notes">×</button></div><h2>A reference, not a new meta guide.</h2><p>This CM18 sample uses pages 4–5 of your PDF. The targets and named skills are transcribed; recommendations have not been independently updated for the global server.</p><h3>Images</h3><p>Character crops come only from the PDF you supplied. They are local review assets, excluded from Git. Original ownership and public reuse permission remain unverified. No GameTora images are hotlinked.</p><h3>What is still a placeholder?</h3><p>Character names, outfit IDs, unique-skill identities, tier order and activation details. Numbered picks identify their position in the reference, not their ranking.</p><h3>External research</h3><p>GameTora returned HTTP 403 in this environment; its terms and asset source could not be verified. Public extraction utilities exist, but do not establish permission to republish game images.</p><p><a href="https://gametora.com/umamusume" target="_blank" rel="noreferrer">GameTora ↗</a> · <a href="https://github.com/rockisch/umamusu-utils" target="_blank" rel="noreferrer">umamusu-utils ↗</a></p><p class="dialog-footnote">Use ← / → to switch slides, H for clean view, F for fullscreen, Esc to clear a selection. Browser fullscreen may also exit on Esc.</p></dialog>
+</body>
+</html>

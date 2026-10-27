@@ -1,0 +1,5 @@
+# Reference crops from the user's PDF: local review only, not cleared for redistribution.
+assets/local/
+artifacts/
+node_modules/
+dist-preview/

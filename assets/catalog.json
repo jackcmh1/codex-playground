@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-27",
+  "scope": "CM18 acquisition trial; no artwork cleared for public distribution",
+  "sources": {
+    "umas": {
+      "repository": "brickc4/umaLord",
+      "commit": "b3e589a8459127f52bf811312c16ec728c5e63a4",
+      "path": "knowledge/data/umas.json"
+    },
+    "skill_names": {
+      "repository": "TheCing/uma-tools",
+      "commit": "5ce95905fef753a33f7519b5559a86e92f5d56cc",
+      "path": "umalator-global/skillnames.json"
+    },
+    "skill_icons": {
+      "repository": "TheCing/uma-tools",
+      "commit": "5ce95905fef753a33f7519b5559a86e92f5d56cc",
+      "path": "umalator-global/skill_meta.json"
+    },
+    "secondary_skill_names": {
+      "repository": "brickc4/umaLord",
+      "commit": "b3e589a8459127f52bf811312c16ec728c5e63a4",
+      "path": "knowledge/data/skills.json"
+    }
+  },
+  "assets": [
+    {
+      "id": "character:100601",
+      "local_path": "assets/local/catalog/character-100601.webp",
+      "source": {
+        "repository": "brickc4/umaLord",
+        "commit": "b3e589a8459127f52bf811312c16ec728c5e63a4",
+        "path": "app/assets/umas/100601.webp",
+        "blob_sha1": "19f32d2cec210985dab9d1b1bf3a02fde990699f",
+        "url": "https://github.com/brickc4/umaLord/blob/b3e589a8459127f52bf811312c16ec728c5e63a4/app/assets/umas/100601.webp"
+      },
+      "bytes": 13432,
+      "sha256": "1320fefc39ace3647401a16e0df551cdb39f5a1a1a45b128dafc212c6f3e520e",
+      "rights": {
+        "status": "unverified",
+        "public_distribution_allowed": false,
+        "permission_evidence": null
+      },
+      "acquisition": "downloaded_for_local_review"
+    },
+    {
+      "id": "character:100602",
+      "local_path": "assets/local/catalog/character-100602.webp",
+      "source": {
+        "repository": "brickc4/umaLord",
+        "commit": "b3e589a8459127f52bf811312c16ec728c5e63a4",
+        "path": "app/assets/umas/100602.webp",
+        "blob_sha1": "052cf13a50399d8159f7bf8ec4c399937f56fc56",
+        "url": "https://github.com/brickc4/umaLord/blob/b3e589a8459127f52bf811312c16ec728c5e63a4/app/assets/umas/100602.webp"
+      },
+      "bytes": 14904,
+      "sha256": "f79c51d0876f1ff8d9305920a1eec9b93277208e9c086c56133d014717b6215d",
+      "rights": {
+        "status": "unverified",
+        "public_distribution_allowed": false,
+        "permission_evidence": null
+      },
+      "acquisition": "downloaded_for_local_review"
+    },
+    {
+      "id": "character:105101",
+      "local_path": "assets/local/catalog/character-105101.webp",
+      "source": {
+        "repository": "brickc4/umaLord",
+        "commit": "b3e589a8459127f52bf811312c16ec728c5e63a4",
+        "path": "app/assets/umas/105101.webp",
+        "blob_sha1": "925a64561290f61704c574af68e97e81d1436f3e",
+        "url": "https://github.com/brickc4/umaLord/blob/b3e589a8459127f52bf811312c16ec728c5e63a4/app/assets/umas/105101.webp"
+      },
+      "bytes": 12134,
+      "sha256": "6540f50a3ee896de164b6b58d4dc503774d38cc5a52481e3869ff9a0d49fe2af",
+      "rights": {
+        "status": "unverified",
+        "public_distribution_allowed": false,
+        "permission_evidence": null
+      },
+      "acquisition": "downloaded_for_local_review"
+    },
+    {
+      "id": "icon:20042",
+      "local_path": "assets/local/catalog/icon-20042.png",
+      "source": {
+        "repository": "TheCing/uma-tools",
+        "commit": "5ce95905fef753a33f7519b5559a86e92f5d56cc",
+        "path": "icons/20042.png",
+        "blob_sha1": "2eb935f23a4b62ee889eca809f9c9fc447d99d40",
+        "url": "https://github.com/TheCing/uma-tools/blob/5ce95905fef753a33f7519b5559a86e92f5d56cc/icons/20042.png"
+      },
+      "bytes": 1329,
+      "sha256": "96635890a07109a80b0cae9ef808242b53561e73198f91166ff6cfc90c8818dc",
+      "rights": {
+        "status": "unverified",
+        "public_distribution_allowed": false,
+        "permission_evidence": null
+      },
+      "acquisition": "downloaded_for_local_review"
+    },
+    {
+      "id": "icon:20041",
+      "local_path": "assets/local/catalog/icon-20041.png",
+      "source": {
+        "repository": "TheCing/uma-tools",
+        "commit": "5ce95905fef753a33f7519b5559a86e92f5d56cc",
+        "path": "icons/20041.png",
+        "blob_sha1": "a45a65987d486fdc90deeee32a5919a8c2645236",
+        "url": "https://github.com/TheCing/uma-tools/blob/5ce95905fef753a33f7519b5559a86e92f5d56cc/icons/20041.png"
+      },
+      "bytes": 1428,
+      "sha256": "4e584c8950cda88e58d80a8af2e4016f6f839d0008ee58e70bef55ff146412af",
+      "rights": {
+        "status": "unverified",
+        "public_distribution_allowed": false,
+        "permission_evidence": null
+      },
+      "acquisition": "downloaded_for_local_review"
+    },
+    {
+      "id": "icon:20021",
+      "local_path": "assets/local/catalog/icon-20021.png",
+      "source": {
+        "repository": "TheCing/uma-tools",
+        "commit": "5ce95905fef753a33f7519b5559a86e92f5d56cc",
+        "path": "icons/20021.png",
+        "blob_sha1": "104090bbd5bfb76e764afb146b4175dfd2098bbf",
+        "url": "https://github.com/TheCing/uma-tools/blob/5ce95905fef753a33f7519b5559a86e92f5d56cc/icons/20021.png"
+      },
+      "bytes": 1405,
+      "sha256": "2b24d0e187596aafd1db940dcc69db97b09018d882c8688effb9fedf60cb599c",
+      "rights": {
+        "status": "unverified",
+        "public_distribution_allowed": false,
+        "permission_evidence": null
+      },
+      "acquisition": "downloaded_for_local_review"
+    }
+  ],
+  "characters": [
+    {
+      "outfit_id": 100601,
+      "character_id": 1006,
+      "ko_name_candidate": "오구리 캡",
+      "ko_name_status": "needs_authoritative_KR_check",
+      "en_name_candidate": "Oguri Cap",
+      "en_outfit_candidate": "Starlight Beat",
+      "en_name_status": "community_Global_dataset_not_client_verified",
+      "image_asset": "character:100601",
+      "source_unique_skill_id": 100061,
+      "unique_skill_status": "source_conflict_hold"
+    },
+    {
+      "outfit_id": 100602,
+      "character_id": 1006,
+      "ko_name_candidate": "오구리 캡",
+      "ko_name_status": "needs_authoritative_KR_check",
+      "en_name_candidate": "Oguri Cap",
+      "en_outfit_candidate": "Ashen Miracle",
+      "en_name_status": "community_Global_dataset_not_client_verified",
+      "image_asset": "character:100602",
+      "source_unique_skill_id": 100061,
+      "unique_skill_status": "source_conflict_hold"
+    },
+    {
+      "outfit_id": 105101,
+      "character_id": 1051,
+      "ko_name_candidate": "니시노 플라워",
+      "ko_name_status": "needs_authoritative_KR_check",
+      "en_name_candidate": "Nishino Flower",
+      "en_outfit_candidate": "Layered Petals",
+      "en_name_status": "community_Global_dataset_not_client_verified",
+      "image_asset": "character:105101",
+      "source_unique_skill_id": 100511,
+      "unique_skill_status": "not_independently_verified"
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": 200551,
+      "ko_name": null,
+      "ko_name_status": "pending",
+      "en_name_candidate": "Unrestrained",
+      "en_name_status": "two_community_Global_sources_agree_not_client_verified",
+      "icon_id": "20042",
+      "image_asset": "icon:20042",
+      "guide_binding_status": "reference_name_match"
+    },
+    {
+      "skill_id": 201342,
+      "ko_name": null,
+      "ko_name_status": "pending",
+      "en_name_candidate": "Straight Descent",
+      "en_name_status": "two_community_Global_sources_agree_not_client_verified",
+      "icon_id": "20041",
+      "image_asset": "icon:20041",
+      "guide_binding_status": "reference_name_match"
+    },
+    {
+      "skill_id": 201482,
+      "ko_name": null,
+      "ko_name_status": "pending",
+      "en_name_candidate": "After-School Stroll",
+      "en_name_status": "two_community_Global_sources_agree_not_client_verified",
+      "icon_id": "20021",
+      "image_asset": "icon:20021",
+      "guide_binding_status": "reference_name_match"
+    },
+    {
+      "skill_id": 200702,
+      "ko_name": null,
+      "ko_name_status": "pending",
+      "en_name_candidate": "Updrafters",
+      "en_name_status": "two_community_Global_sources_agree_not_client_verified",
+      "icon_id": "20041",
+      "image_asset": "icon:20041",
+      "guide_binding_status": "name_difference_requires_review"
+    },
+    {
+      "skill_id": 202401,
+      "ko_name": null,
+      "ko_name_status": "pending",
+      "en_name_candidate": "Lightning Surge",
+      "en_name_status": "two_community_Global_sources_agree_not_client_verified",
+      "icon_id": "20042",
+      "image_asset": "icon:20042",
+      "guide_binding_status": "candidate_requires_review"
+    }
+  ],
+  "issues": [
+    {
+      "id": "flash-forward-name-collision",
+      "status": "unresolved",
+      "guide_text": "Flash Forward, acceleration +0.4, Late/End",
+      "dataset_match": {
+        "skill_id": 201103,
+        "name": "Flash Forward",
+        "category": "Speed Boost"
+      },
+      "candidate": {
+        "skill_id": 202401,
+        "name": "Lightning Surge",
+        "category": "Acceleration"
+      },
+      "decision": "Do not bind or rename the guide automatically; confirm the Korean original and effect."
+    },
+    {
+      "id": "updrafts-name-difference",
+      "status": "unresolved",
+      "guide_text": "Updrafts",
+      "dataset_name": "Updrafters",
+      "candidate_skill_id": 200702,
+      "decision": "Confirm source and intended spelling before updating the guide."
+    },
+    {
+      "id": "oguri-unique-source-collision",
+      "status": "unresolved",
+      "source_outfit_ids": [
+        100601,
+        100602
+      ],
+      "source_unique_skill_id": 100061,
+      "decision": "Source assigns both outfits the same unique ID; do not use this field to bind uniques without independent confirmation."
+    }
+  ]
+}
