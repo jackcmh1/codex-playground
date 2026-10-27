@@ -17,3 +17,5 @@ Passed `npm run check` and `npm run build:preview`. In system Chromium via Pytho
 - No JS exceptions or HTTP errors during the tested paths.
 
 Visually reviewed desktop runners/stats and mobile stats screenshots. Screenshots stay in ignored artifacts/. The static export has a fixed file allowlist and a recursive SHA-256 manifest; the source PDF, raw transcript and local asset trial folder are excluded. Actual Pages deployment and published-file checks are recorded in deployment.md after publication.
+
+Published CM23 content was verified after the successful GitHub Pages deployment. Ten manifest-listed files were fetched over certificate-verified HTTPS and matched SHA-256. The published bytes were rendered in Chromium with response routing (the environment Chromium does not trust the outbound proxy CA; certificate checks were not disabled). Five chapter touch selections, two loaded portraits, mobile width and the CM18 archive link passed without JS errors. Direct access on the user's actual phone remains for review. Versioned script/style URLs prevent the previous CM18 root assets from being reused from browser cache.

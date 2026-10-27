@@ -27,3 +27,7 @@ Pushed `gh-pages` at `da0e8c382fc2c9702200ee08a2a80ed49aa2a2a4`. The branch cont
 After the user changed repository visibility and selected gh-pages / root, GitHub reports `private: false`, `has_pages: true`, Pages `status: built`, and a successful `pages build and deployment` workflow. The actual Pages URL is https://jackcmh1.github.io/codex-playground/ and returns HTTP 200.
 
 Live HTML, JS and CSS were downloaded using Python HTTPS with certificate verification enabled and matched the published SHA-256 manifest. The environment's Chromium rejected the proxy certificate, so its certificate checks were not disabled: browser interaction validation rendered those verified live responses via request routing. Direct phone-browser access still needs user confirmation.
+
+## CM23 example
+
+The user requested a site example based on the supplied CM23 Korean transcript. Source implementation is on `cm23-example`; the Pages deployment root now serves CM23, with the previous CM18 placeholder sample retained at `cm18/`. Five chapters include course, conditional stat alternatives, source-recommended runners, inheritance by style, and team examples. Two specifically selected reference portraits are included; see `cm23/ASSETS.md` for provenance and unverified reuse status. This changes the earlier placeholder-only deployment scope; it does not claim a license or expose the source PDF/full local library. Actual Global details remain marked for review. Versioned HTML asset references avoid stale CM18 JS/CSS caching.
