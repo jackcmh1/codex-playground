@@ -1,197 +1,71 @@
 'use strict';
-
-// Historical reference data, not independently verified current gameplay advice.
-const stats = [
-  { id: 'speed', name: 'Speed', value: '1500 ↑', extra: '(1600)', symbol: '»', color: '#d8eaf0', ink: '#4a91aa', note: 'The reference lists 1500 ↑, with 1600 in parentheses. The meaning of the parenthetical target needs presenter confirmation.' },
-  { id: 'stamina', name: 'Stamina', value: '600', symbol: '♡', color: '#f5dfd7', ink: '#bc7666', note: 'The CM18 reference lists a stamina target of 600. No recovery-skill requirement is specified on this slide.' },
-  { id: 'power', name: 'Power', value: '1200', sub: 'Stat threshold / 1101 ↑', symbol: '↗', color: '#f1e6c3', ink: '#b7933f', note: 'The reference lists a power target of 1200 and separately notes a stat threshold of 1101 ↑. The threshold calculation has not been independently checked.' },
-  { id: 'guts', name: 'Guts', value: '600 ↑', symbol: '♧', color: '#eddfeb', ink: '#a37e9b', note: 'The reference lists a guts target of 600 or higher. No additional explanation is provided in the supplied slide.' },
-  { id: 'wit', name: 'Wit', value: '1200', symbol: '◇', color: '#dceadd', ink: '#709479', note: 'The reference lists a wit target of 1200. Stat labels are presentation labels; values follow the supplied PDF.' }
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const chapters=[
+ {name:'Course',kicker:'01 / READ THE RACE',title:'A short straight. A long setup.',note:'The source expects front-line runners to benefit from this course. Build enough mid-race speed to stay connected before the final straight.',time:'00:08–01:42 · 06:05–07:34'},
+ {name:'Stats',kicker:'02 / BUILD WITH CONDITIONS',title:'Stamina and guts belong together.',note:'These are two alternatives from the spoken explanation, not a complete stat table. Recovery skills, style and debuffs can change the requirement.',time:'01:51–02:39 · 04:37–05:57'},
+ {name:'Runners',kicker:'03 / CHOOSE YOUR CORE',title:'Two headline picks. Different requirements.',note:'The reference centers New Year Kitasan Black and Xmas Oguri Cap. These are source recommendations, not an independently verified Global tier list.',time:'10:41–16:27'},
+ {name:'Inheritance',kicker:'04 / MATCH THE RUNNING STYLE',title:'Conditions matter more than a shopping list.',note:'The Korean names are retained where official Global wording is not yet verified. Recommendations depend on position, team composition and balance updates.',time:'07:42–09:10'},
+ {name:'Teams',kicker:'05 / BRING IT TOGETHER',title:'Build the team around your strongest runner.',note:'The source recommends Front/Pace cores, with an ace-plus-debuff alternative. Adapt to the roster and support cards you can actually train with.',time:'16:36–18:33'}
 ];
-const styles = [
-  { id: 'front', name: 'Front', color: '#cf8f86', acceleration: [{ name: 'Unrestrained', note: 'Acceleration +0.4' }], speedSlots: 1 },
-  { id: 'pace', name: 'Pace', color: '#d5b575', acceleration: [{ name: 'Straight Descent', note: 'Acceleration +0.2' }], speedSlots: 3 },
-  { id: 'late', name: 'Late', color: '#9fbb76', acceleration: [{ name: 'Flash Forward', note: 'Acceleration +0.4' }, { name: 'Updrafts', note: 'Acceleration +0.2' }], speedSlots: 3 },
-  { id: 'end', name: 'End', color: '#84b9bd', acceleration: [{ name: 'Flash Forward', note: 'Acceleration +0.4' }], speedSlots: 3 }
-];
-const $ = (selector) => document.querySelector(selector);
-const all = (selector) => [...document.querySelectorAll(selector)];
-let slide = 0;
-let pinnedOverview = null;
-let pinnedSkill = null;
-let expandedStyle = null;
-
-const localImages = document.documentElement.dataset.assets === 'local';
-// Public exports never request or bundle PDF-derived images.
-function portrait(file, alt, label) {
-  return localImages
-    ? `<img src="assets/local/${file}.png" alt="${alt}" data-fallback="${label}">`
-    : `<span class="missing-art" role="img" aria-label="${alt}; reference artwork omitted">${label}</span>`;
+let chapter=0,selected=null,beat=-1,preset='balanced',style='front';
+let details={};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function focusButton(id,body,cls=''){return `<button class="focus-card ${cls}" data-focus="${id}" aria-pressed="false">${body}</button>`;}
+function entry(id,title,note,time){details[id]={title,note,time};}
+function image(file,alt){return `<img src="images/${file}" alt="${alt}" data-fallback="${alt}">`;}
+function course(){
+ entry('conditions','The source race conditions','Nakayama, turf, 2,000m, right-handed, spring, sunny and good track condition. “Firm” is a provisional English turf label here; verify against the Global event notice.','00:08–00:25');
+ entry('climbs','Do not lose contact early','The speaker highlights successive early climbs and the risk of being pushed back. Exact elevation distances are not available from the transcript.','00:31–01:04');
+ entry('downhill','A downhill helps conserve endurance','The source describes a fairly long downhill and its stamina implications. This does not eliminate the need for adequate stamina or recovery.','01:04–01:26');
+ entry('straight','Keep the gap manageable','The final straight is short. The source therefore emphasizes mid-race speed and staying near the front rather than relying only on a late catch-up.','01:34–01:42 · 06:37–07:34');
+ return `<div class="course-layout"><div class="course-hero"><span class="eyebrow">NAKAYAMA / TURF</span><div class="distance">2,000<span>m</span></div><div class="condition-chips"><span>Medium</span><span>Right-handed</span><span>Spring</span><span>Sunny</span><span>Firm*</span></div><div class="course-art" aria-hidden="true"><div class="track-oval"></div><div class="track-oval inner"></div><div class="finish-line"></div><span class="track-word">NAKAYAMA</span><span class="track-caption">SCHEMATIC · NOT TO SCALE</span></div><p class="micro">*English condition label and Global event settings need confirmation.</p></div><div class="takeaways"><div class="section-label">WHAT SHAPES THE RACE</div>${focusButton('climbs','<span class="card-number">01</span><div><h3>Climb. Then climb again.</h3><p>Early hills make holding position important.</p></div><span>↗</span>')}${focusButton('downhill','<span class="card-number">02</span><div><h3>Use the downhill.</h3><p>Account for it when planning endurance.</p></div><span>↗</span>')}${focusButton('straight','<span class="card-number">03</span><div><h3>Stay within reach.</h3><p>There is little final-straight room to recover.</p></div><span>↗</span>')}${focusButton('conditions','<span>◎</span><div><h3>Race conditions</h3><p>Source settings · tap to inspect</p></div><span>↗</span>','compact')}</div></div>`;
 }
-$('#featured-image').innerHTML = portrait('featured', 'Featured reference character', 'REFERENCE ART');
-if (!localImages) {
-  document.querySelector('.art-caption').textContent = 'Review preview · artwork omitted';
-  document.querySelector('.studio-label').innerHTML = '<span class="live-dot"></span> CM18 SAMPLE / PUBLIC REVIEW';
+function stats(){
+ entry('stamina','A conditional stamina target',preset==='balanced'?'The source pairs about 800 stamina with about 600 guts. Front and Pace may want extra margin from an appropriate passive or recovery skill.':'The source pairs about 700 stamina with about 1200 guts. This is not interchangeable with the lower-guts setup, and is not a guarantee against debuffs.','01:58–02:30 · 05:00–05:34');
+ entry('speed','Speed: scenario context, not a recovered table','1500 is mentioned when discussing the new scenario’s speed limit. The exact displayed target has not been recovered from a screenshot; do not treat this as a complete target-stat transcription.','02:22–02:39');
+ entry('power','Displayed power and effective power are different','The speaker discusses power around 1200 and contributions from mood and passives. The new mechanic’s exact formula and threshold still need Global verification.','03:34–04:20 · 22:22–23:43');
+ entry('wit','No invented value','A numerical wit target is not clearly spoken in the supplied transcript. Leave this open until the stat-table screenshot is available.','On-screen table needed');
+ entry('oguri-stamina','Xmas Oguri: a separate recovery plan','The source discusses about 600 stamina for Xmas Oguri because she builds multiple recovery skills for her unique-trigger setup. Do not apply this number to the rest of the roster.','05:41–05:57 · 12:29–13:23');
+ return `<div class="stats-layout"><div><div class="section-label">SOURCE STAT PLANNING <span>CHOOSE AN ALTERNATIVE</span></div><div class="preset-toggle" role="group" aria-label="Stamina and guts alternatives"><button data-preset="balanced" aria-pressed="${preset==='balanced'}" class="${preset==='balanced'?'active':''}">Lower guts</button><button data-preset="guts" aria-pressed="${preset==='guts'}" class="${preset==='guts'?'active':''}">Higher guts</button></div><div class="stat-pair">${focusButton('stamina',`<span class="eyebrow">STAMINA</span><strong>${preset==='balanced'?'800':'700'}<small>approx.</small></strong><span>paired with ${preset==='balanced'?'600':'1200'} guts</span>`)}<div class="guts-value"><span class="eyebrow">GUTS</span><strong>${preset==='balanced'?'600':'1200'}</strong><span>source alternative</span></div></div><div class="stat-small-grid">${focusButton('speed','<span class="eyebrow">SPEED</span><strong>1500*</strong><p>Scenario-cap context</p>')}${focusButton('power','<span class="eyebrow">POWER</span><strong>~1200</strong><p>Effective stats matter</p>')}${focusButton('wit','<span class="eyebrow">WIT</span><strong>—</strong><p>Table capture needed</p>')}</div><p class="micro">Values are the speaker’s conditional recommendations. The full target-stat table remains unverified.</p></div><div class="exception-panel">${image('oguri-100602.webp','Xmas Oguri Cap reference portrait')}<span class="eyebrow">RUNNER-SPECIFIC EXCEPTION</span><h3>A different<br>recovery equation.</h3>${focusButton('oguri-stamina','<span class="eyebrow">XMAS OGURI ONLY</span><strong>~600 <small>stamina</small></strong><p>With her multi-recovery setup.<br>Not a universal minimum.</p>')}<span class="timestamp">SOURCE 05:41–05:57</span></div></div>`;
 }
-
-$('#stats').innerHTML = stats.map(s => `<button class="stat-row" data-stat="${s.id}" aria-pressed="false"><span class="stat-icon" style="--icon-bg:${s.color};--icon-fg:${s.ink}">${s.symbol}</span><span class="stat-copy"><span class="stat-name">${s.name}</span><span class="stat-number">${s.value} ${s.extra ? `<small>${s.extra}</small>` : ''}</span>${s.sub ? `<span class="stat-extra">${s.sub}</span>` : ''}</span><span class="stat-arrow">↗</span></button>`).join('');
-$('#featured-picks').innerHTML = [1, 2, 3].map(n => `<button class="pick" data-pick="featured-${n}" aria-pressed="false" aria-label="Select reference pick ${n}"><span class="pick-index">REF. 0${n}</span><span class="pick-portrait">${portrait(`pick-0${n}`, `Reference character ${n} from PDF page 4`, `PICK 0${n}`)}</span><span class="pick-label">Reference pick 0${n}</span></button>`).join('');
-$('#roster').innerHTML = Array.from({ length: 8 }, (_, i) => `<button class="mini-pick" data-pick="roster-${i+1}" aria-label="Select roster reference ${i+1}" aria-pressed="false">${portrait(`roster-${String(i+1).padStart(2,'0')}`, `Roster reference ${i+1}`, String(i+1).padStart(2,'0'))}</button>`).join('');
-$('#skill-rows').innerHTML = styles.map(s => `<div class="skill-row" data-style-row="${s.id}"><button class="style-button" data-style="${s.id}" aria-expanded="false" title="Focus ${s.name}; click again to show all"><span class="style-dot" style="--style-color:${s.color}"></span>${s.name}<span aria-hidden="true">↗</span></button><div class="skill-stack">${s.acceleration.map((skill, i) => `<button class="skill-button" data-skill="${s.id}-${i}" aria-pressed="false"><span class="skill-symbol">↗</span><span class="skill-text">${skill.name}<small>${skill.note} · PDF reference</small></span></button>`).join('')}</div><div class="skill-stack"><button class="skill-button speed-slot" data-speed="${s.id}" aria-pressed="false"><span class="skill-symbol">»</span><span class="skill-text">${s.speedSlots} reference ${s.speedSlots === 1 ? 'pick' : 'picks'}<small>Character / unique IDs pending</small></span></button></div></div>`).join('');
-
-function showOverview(item = pinnedOverview) {
-  let title = 'Your explanation, in focus.';
-  let note = 'Hover over a stat or reference pick to explore. Click to pin the explanation while you speak.';
-  let kicker = 'PRESENTER FOCUS';
-  if (item?.type === 'stat') {
-    const s = stats.find(s => s.id === item.id);
-    title = `${s.name} · ${s.value}`;
-    note = s.note;
-    kicker = 'TARGET STAT / PDF p.4';
-  } else if (item?.type === 'pick') {
-    const [group, num] = item.id.split('-');
-    title = `${group === 'featured' ? 'Reference pick' : 'Roster reference'} ${num.padStart(2, '0')}`;
-    note = 'Cropped from your CM18 slide. Character name, outfit, tier placement and recommendation details need confirmation. Numbering is not a ranking.';
-    kicker = 'CHARACTER / IDENTITY PENDING';
-  }
-  $('#overview-detail').innerHTML = `<span class="detail-kicker">${kicker}</span><h3>${title}</h3><p>${note}</p>`;
+function runners(){
+ entry('kitasan','New Year Kitasan Black · Front','The source favors this Kitasan variant as a Front ace. Mid-race strength matters; she cannot use a Kitasan support card, and the speaker highlights access to Speed Maruzensky. Official English outfit naming remains to verify.','10:41–12:14');
+ entry('oguri','Xmas Oguri Cap · Pace','The reference builds around multiple recovery triggers. It assumes the anniversary change to straight recovery timing. Validate that timing in Global before finalizing the build.','12:29–13:40');
+ entry('pace-alts','Pace alternatives','Original Tokai Teio and an alternate Tamamo Cross are discussed for strong mid-race performance and a specific acceleration plan. Confirm the Tamamo outfit and official skill names. These are not identical substitutes.','13:40–15:07');
+ entry('backline','Back-line alternatives','The speaker mentions several Late/End options but describes a harder chase against a Front/Pace-heavy field. Mid-race speed is emphasized. This is an expected meta, not a measured Global win-rate claim.','15:07–16:27');
+ return `<div class="runner-layout"><div class="runner-cards">${focusButton('kitasan',`<div class="runner-image">${image('kitasan-106802.png','New Year Kitasan Black reference portrait')}<span>FRONT RUNNER</span></div><div class="runner-copy"><span class="eyebrow">SOURCE HEADLINE PICK</span><h3>Kitasan Black</h3><p>New Year variant</p><span class="runner-tag">Mid-race strength → acceleration</span></div>`,'runner')}${focusButton('oguri',`<div class="runner-image">${image('oguri-100602.webp','Xmas Oguri Cap reference portrait')}<span>PACE CHASER</span></div><div class="runner-copy"><span class="eyebrow">SOURCE HEADLINE PICK</span><h3>Oguri Cap</h3><p>Christmas variant</p><span class="runner-tag">Recovery triggers → unique</span></div>`,'runner')}</div><div class="runner-alts"><span class="section-label">ALTERNATIVES, WITH TRADEOFFS</span>${focusButton('pace-alts','<span class="eyebrow">PACE</span><h3>Teio & Tamamo</h3><p>Original Teio / Tamamo outfit pending.<br>A different mid-race and skill plan.</p><span>View source caveats ↗</span>')}${focusButton('backline','<span class="eyebrow">LATE / END</span><h3>Keep the gap small.</h3><p>More demanding positioning.<br>Bring enough mid-race speed.</p><span>View source caveats ↗</span>')}<p class="micro">No invented tier ranks. Final Global availability and outfit names need review.</p></div></div>`;
 }
-function setOverview(item) {
-  pinnedOverview = pinnedOverview?.id === item.id && pinnedOverview?.type === item.type ? null : item;
-  all('[data-stat], [data-pick]').forEach(el => {
-    const active = !!pinnedOverview && (el.dataset.stat ? pinnedOverview.type === 'stat' && el.dataset.stat === pinnedOverview.id : pinnedOverview.type === 'pick' && el.dataset.pick === pinnedOverview.id);
-    el.classList.toggle('selected', active);
-    el.setAttribute('aria-pressed', String(active));
-  });
-  showOverview();
+const styleInfo={front:{label:'Front Runner',ko:'도주',core:['Seiun Sky','New Year Kitasan Black'],skills:[],note:'The source recommends both unique sources for other Front runners. A Kitasan ace uses her own unique and inherits from Seiun Sky; do not list a runner’s own unique as an inheritance requirement.',time:'07:42–08:05'},pace:{label:'Pace Chaser',ko:'선행',core:['Runner-specific plan','Position-dependent choices'],skills:['치열한 승부','쾌진격','뒤처지기 방지'],note:'Xmas Oguri uses her own recovery-trigger plan. Other Pace runners may use different acceleration options. Some inherited uniques depend on being able to reach the required position; they are not universal recommendations.',time:'08:05–08:47 · 13:32–14:59'},late:{label:'Late Surger',ko:'선입',core:['Mejiro Ryan','Mejiro Dober'],skills:['뒤처지기 방지'],note:'The source identifies Ryan and Dober as shared inheritance sources for the back line. Stay close enough during mid-race; do not treat these as guaranteed activations regardless of position.',time:'08:47–09:10 · 15:07–16:13'},end:{label:'End Closer',ko:'추입',core:['Mejiro Ryan','Mejiro Dober'],skills:['뛰어난 순발력','기사회생'],note:'A similar inheritance core to Late, with additional source-mentioned acceleration options. Exact Korean text, official English names and anniversary effects still need confirmation.',time:'08:47–09:10 · 16:13–16:27'}};
+function inheritance(){
+ const s=styleInfo[style];
+ entry('inherit-core',`${s.label} · inheritance sources`,s.note,s.time);
+ entry('inherit-skills','Skill-name verification stays visible','These Korean terms are preserved from the automatic transcript. They must be resolved by effect and ID before assigning official Global names. This draft does not reuse the old Flash Forward mapping.','07:42–09:10');
+ entry('inherit-caveat','Match the plan to the runner','Source recommendations assume particular positions, balance changes and runner availability. Own unique skills, inherited uniques and ordinary skills are different build components.','07:42–09:10');
+ return `<div class="inherit-layout"><div class="style-selector" role="group" aria-label="Running style">${Object.entries(styleInfo).map(([id,s])=>`<button data-style="${id}" aria-pressed="${style===id}" class="${style===id?'active':''}"><span>${s.ko}</span><strong>${s.label}</strong><span>↗</span></button>`).join('')}</div><div class="inherit-content"><div class="section-label">${s.label.toUpperCase()} <span>SOURCE BUILD COMPONENTS</span></div>${focusButton('inherit-core',`<span class="eyebrow">INHERITANCE / UNIQUE SOURCES</span><div class="inherit-names">${s.core.map(x=>`<h3>${x}</h3>`).join('<span>+</span>')}</div><p>Tap for runner-specific conditions.</p>`)}${focusButton('inherit-skills',`<span class="eyebrow">SOURCE-MENTIONED SKILLS</span><div class="skill-chips">${s.skills.length?s.skills.map(x=>`<span lang="ko">${x}<small>EN pending</small></span>`).join(''):'<span>Mid-race speed first<small>Exact skill list pending</small></span>'}</div><p>Terms retained for verification, not final English labels.</p>`)}${focusButton('inherit-caveat','<span>!</span><p>Check position, runner and Global patch context before treating any option as mandatory.</p>','caveat')}</div></div>`;
 }
-all('[data-stat], [data-pick]').forEach(el => {
-  const item = el.dataset.stat ? { type: 'stat', id: el.dataset.stat } : { type: 'pick', id: el.dataset.pick };
-  el.addEventListener('pointerenter', () => showOverview(item));
-  el.addEventListener('pointerleave', () => showOverview());
-  el.addEventListener('focus', () => showOverview(item));
-  el.addEventListener('blur', () => showOverview());
-  el.addEventListener('click', () => setOverview(item));
-});
-function showSkill(item = pinnedSkill) {
-  let title = 'Start with a running style.';
-  let note = 'Select a row to enlarge it. Select a named skill to keep its reference details on screen.';
-  let kicker = 'INHERITANCE / OVERVIEW';
-  if (item?.type === 'skill') {
-    const [id, index] = item.id.split('-');
-    const style = styles.find(s => s.id === id);
-    const skill = style.acceleration[Number(index)];
-    title = skill.name;
-    note = `${style.name} · ${skill.note}, as listed in your PDF. Activation conditions and suitability are not verified here; no additional gameplay advice has been added.`;
-    kicker = 'ACCELERATION / PDF p.5';
-  } else if (item?.type === 'speed') {
-    const style = styles.find(s => s.id === item.id);
-    title = `${style.name} · Speed`;
-    note = `The reference shows ${style.speedSlots} character ${style.speedSlots === 1 ? 'portrait' : 'portraits'} in this speed cell. Their unique-skill names and exact outfit IDs remain to be confirmed.`;
-    kicker = 'SPEED / IDENTITIES PENDING';
-  } else if (expandedStyle) {
-    title = `${styles.find(s => s.id === expandedStyle).name} focus`;
-    note = 'This row is enlarged for recording. Select a skill to explain it, or choose “Show all styles” to return to the comparison.';
-  }
-  $('#skill-detail').innerHTML = `<span class="detail-kicker">${kicker}</span><h4>${title}</h4><p>${note}</p>`;
+function teams(){
+ entry('team-one','One Front + two Pace','A source-recommended balanced front-line composition. For example, build around the Kitasan variant and Xmas Oguri, then choose a trainable Pace option from your own roster. The third slot is not fixed.','16:36–16:52');
+ entry('team-two','Two Front + one Pace','Another recommended composition. Choose this if you can field two sufficiently strong Front runners; simply filling two Front slots is not the same as meeting the training requirements.','16:36–16:52');
+ entry('team-debuff','Ace + supporting debuffs','The source discusses an ace-focused alternative and later prefers speed debuffs in its expected meta. This is a strategic option, not a guaranteed win-rate formula.','16:52–17:08 · 18:03–18:33');
+ entry('scenario','A timing-sensitive support plan','The reference assumes the Three Goddesses support has not released. Do not carry the suggested deck or its calendar dates into Global without checking that assumption. Borrow priorities depend on missing core support cards.','18:41–21:16 · 24:54–26:55');
+ return `<div class="teams-layout"><div class="team-list"><div class="section-label">THREE SLOTS. A SHARED PLAN.</div>${focusButton('team-one','<span class="team-index">A</span><div><h3>Front-line balance</h3><div class="team-slots"><span class="front">Front</span><span class="pace">Pace</span><span class="pace">Pace</span></div></div><span>↗</span>','team')}${focusButton('team-two','<span class="team-index">B</span><div><h3>Double Front</h3><div class="team-slots"><span class="front">Front</span><span class="front">Front</span><span class="pace">Pace</span></div></div><span>↗</span>','team')}${focusButton('team-debuff','<span class="team-index">C</span><div><h3>Back your strongest ace</h3><div class="team-slots"><span class="ace">Ace</span><span>Debuff</span><span>Debuff</span></div></div><span>↗</span>','team')}</div><div class="closing-panel"><span class="eyebrow">BEFORE YOU TRAIN</span><h3>Build for<br>your <em>roster.</em></h3><p>Runner strength, support access and the event’s actual release timing matter more than copying a lineup.</p>${focusButton('scenario','<span class="eyebrow">GLOBAL CHECK REQUIRED</span><h4>Before or after<br>Three Goddesses?</h4><p>The source assumes “before”.<br>Check the Global schedule first.</p>')}<span class="timestamp">SUPPORT DECKS REMAIN A FOLLOW-UP</span></div></div>`;
 }
-function markSkills() {
-  all('[data-skill], [data-speed]').forEach(el => {
-    const active = !!pinnedSkill && (el.dataset.skill ? pinnedSkill.type === 'skill' && el.dataset.skill === pinnedSkill.id : pinnedSkill.type === 'speed' && el.dataset.speed === pinnedSkill.id);
-    el.classList.toggle('selected', active);
-    el.setAttribute('aria-pressed', String(active));
-  });
-}
-all('[data-skill], [data-speed]').forEach(el => {
-  const item = el.dataset.skill ? { type: 'skill', id: el.dataset.skill } : { type: 'speed', id: el.dataset.speed };
-  el.addEventListener('pointerenter', () => showSkill(item));
-  el.addEventListener('pointerleave', () => showSkill());
-  el.addEventListener('focus', () => showSkill(item));
-  el.addEventListener('blur', () => showSkill());
-  el.addEventListener('click', () => {
-    pinnedSkill = pinnedSkill?.id === item.id && pinnedSkill?.type === item.type ? null : item;
-    markSkills(); showSkill();
-  });
-});
-function expandStyle(id) {
-  expandedStyle = expandedStyle === id ? null : id;
-  pinnedSkill = null;
-  all('[data-style-row]').forEach(row => {
-    row.hidden = !!expandedStyle && row.dataset.styleRow !== expandedStyle;
-    row.classList.toggle('expanded', row.dataset.styleRow === expandedStyle);
-  });
-  all('[data-style]').forEach(el => el.setAttribute('aria-expanded', String(el.dataset.style === expandedStyle)));
-  markSkills(); showSkill();
-}
-all('[data-style]').forEach(el => el.addEventListener('click', () => expandStyle(el.dataset.style)));
-$('#show-all').addEventListener('click', () => expandStyle(null));
-function changeSlide(n) {
-  slide = Math.max(0, Math.min(1, n));
-  $('#overview').hidden = slide !== 0;
-  $('#inheritance').hidden = slide !== 1;
-  $('#slide-name').textContent = slide ? 'INHERITANCE & SKILLS' : 'TARGETS & RUNNERS';
-  $('#page-count').innerHTML = `0${slide+1} <i>/ 02</i>`;
-  all('[data-slide]').forEach(el => {
-    const active = Number(el.dataset.slide) === slide;
-    el.classList.toggle('active', active);
-    el.setAttribute('aria-pressed', String(active));
-  });
-  $('#prev').disabled = slide === 0;
-  $('#next').disabled = slide === 1;
-}
-all('[data-slide]').forEach(el => el.addEventListener('click', () => changeSlide(Number(el.dataset.slide))));
-$('#prev').addEventListener('click', () => changeSlide(slide - 1));
-$('#next').addEventListener('click', () => changeSlide(slide + 1));
-function reset() {
-  pinnedOverview = null;
-  all('[data-stat], [data-pick]').forEach(el => { el.classList.remove('selected'); el.setAttribute('aria-pressed', 'false'); });
-  showOverview(); expandStyle(null);
-}
-$('#reset').addEventListener('click', reset);
-$('#zoom').addEventListener('click', () => {
-  const zoomed = $('#canvas-viewport').classList.toggle('zoomed');
-  $('#zoom').setAttribute('aria-pressed', String(zoomed));
-  $('#zoom').textContent = zoomed ? 'Fit to screen' : 'Zoom in';
-  if (!zoomed) $('#canvas-viewport').scrollLeft = 0;
-});
-function toggleClean() {
-  const active = document.body.classList.toggle('clean');
-  $('#restore').hidden = !active;
-  if (active && document.activeElement instanceof HTMLElement) document.activeElement.blur();
-  if (!active) $('#recording').focus({ preventScroll: true });
-}
-$('#recording').addEventListener('click', toggleClean);
-$('#restore').addEventListener('click', toggleClean);
-async function toggleFullscreen() {
-  try {
-    if (document.fullscreenElement) await document.exitFullscreen();
-    else await document.documentElement.requestFullscreen();
-  } catch {
-    $('#fullscreen').title = 'Fullscreen is unavailable in this browser. Use clean view (H) instead.';
-  }
-}
-$('#fullscreen').addEventListener('click', toggleFullscreen);
-$('#sources-button').addEventListener('click', () => $('#sources').showModal());
-$('#close-sources').addEventListener('click', () => $('#sources').close());
-document.addEventListener('keydown', e => {
-  if ($('#sources').open || e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable) return;
-  if (e.key === 'ArrowRight') { e.preventDefault(); changeSlide(slide + 1); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(slide - 1); }
-  if (e.key === 'Escape') reset();
-  if (e.key.toLowerCase() === 'h') { e.preventDefault(); toggleClean(); }
-  if (e.key.toLowerCase() === 'f') { e.preventDefault(); toggleFullscreen(); }
-});
-// A clean checkout still works before local reference images are supplied.
-all('img[data-fallback]').forEach(img => {
-  const fallback = () => {
-    const placeholder = document.createElement('span');
-    placeholder.className = 'missing-art';
-    placeholder.textContent = img.dataset.fallback;
-    placeholder.setAttribute('role', 'img');
-    placeholder.setAttribute('aria-label', `${img.alt}; local reference image not installed`);
-    img.replaceWith(placeholder);
-  };
-  img.addEventListener('error', fallback, { once: true });
-  if (img.complete && !img.naturalWidth) fallback();
-});
-showOverview(); showSkill(); changeSlide(0);
+const renderers=[course,stats,runners,inheritance,teams];
+function showFocus(id=selected){const d=details[id]||chapters[chapter];$('#focus-title').textContent=d.title;$('#focus-copy').textContent=d.note;$('#focus-time').textContent=d.time;}
+function mark(){ $$('[data-focus]').forEach(b=>{const yes=b.dataset.focus===selected;b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes));});showFocus();}
+function render(){details={};$('#scene').innerHTML=renderers[chapter]();$('#chapter-kicker').textContent=chapters[chapter].kicker;$('#page').innerHTML=`0${chapter+1} <small>/ 05</small>`;$$('[data-chapter]').forEach(b=>{const yes=+b.dataset.chapter===chapter;b.classList.toggle('active',yes);b.setAttribute('aria-current',yes?'step':'false');});$('#prev').disabled=chapter===0;$('#next').disabled=chapter===4;mark();$$('img').forEach(img=>img.addEventListener('error',()=>{const p=document.createElement('span');p.className='image-fallback';p.textContent=img.alt;img.replaceWith(p);},{once:true}));}
+function move(n){chapter=Math.max(0,Math.min(4,n));selected=null;beat=-1;render();}
+function nextBeat(){const ids=$$('[data-focus]').map(x=>x.dataset.focus);if(!ids.length)return;beat=(ids.indexOf(selected)+1)%ids.length;selected=ids[beat];mark();}
+$('#chapters').innerHTML=chapters.map((c,i)=>`<button data-chapter="${i}"><span>0${i+1}</span>${c.name}</button>`).join('');
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.chapter!==undefined)move(+b.dataset.chapter);if(b.dataset.focus){selected=selected===b.dataset.focus?null:b.dataset.focus;mark();}if(b.dataset.preset){preset=b.dataset.preset;selected=null;render();}if(b.dataset.style){style=b.dataset.style;selected=null;render();}});
+$('#scene').addEventListener('pointerover',e=>{if(e.pointerType==='touch'||selected)return;const b=e.target.closest('[data-focus]');if(b)showFocus(b.dataset.focus);});
+$('#scene').addEventListener('pointerleave',()=>showFocus());
+$('#scene').addEventListener('focusin',e=>{const b=e.target.closest('[data-focus]');if(b&&!selected)showFocus(b.dataset.focus);});
+$('#reset').onclick=()=>{selected=null;beat=-1;mark();};$('#beat').onclick=nextBeat;$('#prev').onclick=()=>move(chapter-1);$('#next').onclick=()=>move(chapter+1);
+function clean(){const on=document.body.classList.toggle('clean');$('#restore').hidden=!on;if(on)document.activeElement?.blur();else $('#clean').focus({preventScroll:true});}
+$('#clean').onclick=clean;$('#restore').onclick=clean;
+async function full(){try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('#full').textContent='Use browser fullscreen';}}
+$('#full').onclick=full;$('#notes').onclick=()=>$('#source-dialog').showModal();$('#close-notes').onclick=()=>$('#source-dialog').close();
+document.addEventListener('keydown',e=>{if($('#source-dialog').open||e.altKey||e.ctrlKey||e.metaKey||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;if(e.key==='ArrowRight'){e.preventDefault();move(chapter+1);}if(e.key==='ArrowLeft'){e.preventDefault();move(chapter-1);}if(e.code==='Space'&&e.target.tagName!=='BUTTON'&&e.target.tagName!=='A'){e.preventDefault();nextBeat();}if(e.key==='Escape'){selected=null;mark();}if(e.key.toLowerCase()==='h'){e.preventDefault();clean();}if(e.key.toLowerCase()==='f'){e.preventDefault();full();}});
+render();
