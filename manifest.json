@@ -1,0 +1,10 @@
+{
+  "mode": "placeholder-only",
+  "files": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app.js": "6822bbef6c77b18209db906f49126625536259f2ac9d8e7a6f9b68adbe124d5f",
+    "index.html": "bec95382002cebfc16aec833bdaeb2ed25b33ca5b7bf212179b1e2beb9b9bffa",
+    "robots.txt": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+    "styles.css": "f0588f926841f7545cc715763102e6ffbb368f50679d848f7dd94e216ae1349c"
+  }
+}
